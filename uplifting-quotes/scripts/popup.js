@@ -1,4 +1,7 @@
-const allQuotes = ["You are loved", "You are special"];
+const allQuotes = ["You are loved", 
+    "You are special", "Be the best you can be",
+    "Failure is success in progress", "You are magic",
+    "Happiness is an inside job", "You're doing great!"];
 
 function getAndAddQuote(){
     // Get the quote box
@@ -13,5 +16,4 @@ function getAndAddQuote(){
 }
 
 const joyNeededButton = document.getElementById("generateQuote");
-
 joyNeededButton.addEventListener("click", getAndAddQuote);
