@@ -1,7 +1,10 @@
 const allQuotes = ["You are loved", 
     "You are special", "Be the best you can be",
-    "Failure is success in progress", "You are magic",
-    "Happiness is an inside job", "You're doing great!"];
+    "Failure is success in progress", 
+    "Stay hopeful", "You are magic",
+    "You deserve happiness", "You're doing great!",
+    "Happiness is an inside job",
+    "Every day is a new day", "You matter."];
 
 function getAndAddQuote(){
     // Get the quote box
