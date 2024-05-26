@@ -1,0 +1,20 @@
+* {
+    padding: 10;
+    margin: 10;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  
+#generateQuote {
+    display: block;
+    background-color: #ff5b5b;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    margin: 2em auto 2em auto;
+    color: #ffe6e6;
+  }
+  
+#quote {
+    font-size: 1.3em;
+    text-align: center;
+}
