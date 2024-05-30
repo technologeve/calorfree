@@ -1,0 +1,14 @@
+{
+    "manifest_version": 3,
+    "name": "Calorfree",
+    "version": "1.0",
+    "description": "Calorfree: block calorie information from websites.",
+    "icons": {},
+    "content_scripts": [
+        {
+        "matches": ["<all_urls>"],
+        "js": ["scripts/content.js"]
+        }
+    ]
+    
+}
