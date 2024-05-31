@@ -1,14 +1,22 @@
+/** Main script which removes calorie information. */
 
-// Define the Reguldar Expression string
-const wordMatchRegExp = /([0-9]+) ?(calorie|cal|kcal)s?( per serving)?|(calories?|cal|kcals?)( per serving)?:? ?([0-9]+)/g; // regular expression
+function basicRegexReplacement(regexInput){
+    /** Takes a regular expression, creates a RegExp object, 
+    and uses this to remove all instances of the regular 
+    expression from the innerHTML of a webpage. */
+    
+    // Make this a RegExp() object
+    let regex = new RegExp(regexInput, 'gi'); // 'gi' for case-insensitive replacement
 
-// Make this a RegExp() object
-const regex = new RegExp(wordMatchRegExp, 'gi'); // 'gi' for case-insensitive replacement
+    // Replace all instances of text with said regular expression
+    document.body.innerHTML = document.body.innerHTML.replaceAll(regex, "");
+}
 
-// Replace all instances of text with said regular expression
-document.body.innerHTML = document.body.innerHTML.replaceAll(regex, "");
+// Remove general calorie descriptions
+const generalCalorieRegExp = /([0-9]+) ?(calorie|cal|kcal)s?( per serving)?|(calories?|cal|kcals?)( per serving)?:? ?([0-9]+)/g;
+basicRegexReplacement(generalCalorieRegExp)
 
 // Remove nutritional informayion from Nutrifox plugin
-const wordMatchRegExpNutrifox = /https:\/\/nutrifox.com\/embed\/label\/[0-9]+/g; // regular expression
-const regexNutri = new RegExp(wordMatchRegExpNutrifox, 'gi'); // 'gi' for case-insensitive replacement
-document.body.innerHTML = document.body.innerHTML.replaceAll(regexNutri, "");
+// TODO: allow this to either remove whole label or just calorie count
+const nutrifoxLinkRegExp = /https:\/\/nutrifox.com\/embed\/label\/[0-9]+/g;
+basicRegexReplacement(nutrifoxLinkRegExp)
