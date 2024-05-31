@@ -1,4 +1,4 @@
-# chrome-extension-ed-recovery
+# calorfree
 
 Creating a Chrome Extension which blocks calorie count content from websites.
 
