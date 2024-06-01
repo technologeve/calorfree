@@ -22,10 +22,12 @@ const nutrifoxLinkRegExp = /https:\/\/nutrifox.com\/embed\/label\/[0-9]+/g;
 basicRegexReplacement(nutrifoxLinkRegExp)
 
 // Remove calorie descriptions when separated by <>
+// Find all calorie counts of this form
 const multiLineRegExp = /(calories?|cal|kcals?)( per serving)?:? ?\<([^<]*)\>\<([^<]*)\>[0-9]+/g;
 let words =  document.body.innerHTML.matchAll(multiLineRegExp);
 words = [...words];
 
+// Remove them
 const reg = /\<([^<]*)\>\<([^<]*)\>/g;
 for (i in words){
     let toReplaceWith = [...words[i][0].matchAll(reg)][0][0];
