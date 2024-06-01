@@ -20,3 +20,13 @@ basicRegexReplacement(generalCalorieRegExp)
 // TODO: allow this to either remove whole label or just calorie count
 const nutrifoxLinkRegExp = /https:\/\/nutrifox.com\/embed\/label\/[0-9]+/g;
 basicRegexReplacement(nutrifoxLinkRegExp)
+
+const multiLineRegExp = /(calories?|cal|kcals?)( per serving)?:? ?\<([^<]*)\>\<([^<]*)\>[0-9]+/g;
+let words =  document.body.innerHTML.matchAll(multiLineRegExp);
+words = [...words];
+
+const reg = /\<([^<]*)\>\<([^<]*)\>/g;
+for (i in words){
+    let toReplaceWith = [...words[i][0].matchAll(reg)][0][0];
+    document.body.innerHTML = document.body.innerHTML.replaceAll(words[i][0], toReplaceWith)
+}
