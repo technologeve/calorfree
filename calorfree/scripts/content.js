@@ -25,6 +25,7 @@ const multiLineRegExp = /(calories?|cal|kcals?)( per serving)?:? ?\<([^<]*)\>\<(
 let words =  document.body.innerHTML.matchAll(multiLineRegExp);
 words = [...words];
 
+// Remove calorie descriptions when separated by <>
 const reg = /\<([^<]*)\>\<([^<]*)\>/g;
 for (i in words){
     let toReplaceWith = [...words[i][0].matchAll(reg)][0][0];
