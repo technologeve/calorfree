@@ -16,7 +16,7 @@ function basicRegexReplacement(regexInput){
 const generalCalorieRegExp = /([0-9]+) ?(calorie|cal|kcal)s?( per serving)?|(calories?|cal|kcals?)( per serving)?:? ?([0-9]+)/g;
 basicRegexReplacement(generalCalorieRegExp)
 
-// Remove nutritional informayion from Nutrifox plugin
+// Remove nutritional information from Nutrifox plugin
 // TODO: allow this to either remove whole label or just calorie count
 const nutrifoxLinkRegExp = /https:\/\/nutrifox.com\/embed\/label\/[0-9]+/g;
 basicRegexReplacement(nutrifoxLinkRegExp)
