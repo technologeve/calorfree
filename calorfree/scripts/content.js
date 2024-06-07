@@ -23,7 +23,7 @@ basicRegexReplacement(nutrifoxLinkRegExp)
 
 // Remove calorie descriptions when separated by <>
 // Find all calorie counts of this form
-const multiLineRegExp = /(calories?|cal|kcals?|Calories?|Cal|Kcals?|CALORIES?|CAL|KCALS?)( per serving)?:? ?\<([^<]*)\>\<([^<]*)\>[0-9]+/g;
+const multiLineRegExp = /(calories?|cal|kcals?)( per serving)?:? ?\<([^<]*)\>\<([^<]*)\>[0-9]+/gi;
 let words =  document.body.innerHTML.matchAll(multiLineRegExp);
 words = [...words];
 
