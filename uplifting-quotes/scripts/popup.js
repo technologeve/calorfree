@@ -3,7 +3,7 @@ const allQuotes = ["You are loved",
     "Failure is success in progress", 
     "Stay hopeful", "You are magic",
     "You deserve happiness", "You're doing great!",
-    "Happiness is an inside job",
+    "Happiness is an inside job", "You are smart",
     "Every day is a new day", "You matter."];
 
 function getAndAddQuote(){
