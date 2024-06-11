@@ -74,6 +74,5 @@ function removeAdditionalNutritionalInfo(){
 removeCalorieDescriptions()
 removeAdditionalNutritionalInfo()
 
-// TODO: remove (28%) info- (\([0-9]+%\))?
 // TODO: serving sizes - 6-8 people
 // TODO: add a regular expression break down diagram
