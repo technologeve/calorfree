@@ -61,10 +61,10 @@ function removeAdditionalNutritionalInfo(){
         document.body.innerHTML = document.body.innerHTML.replaceAll(regexNumberSecond, "");
 
         // Replace nutritional info in HTMl which are split by chevrons <><>
-        let otherMultiLineRegExp = RegExp("([0-9]+) ?(\<([^<]*)\>\<([^<]*)\>)? ?g?" + "( per serving)?:? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)?(<([^<]*)\>\<([^<]*)\>)?(m?g)? ?(<([^<]*)\>\<([^<]*)\>)? ?(\\([0-9]+%\\))?" + otherNutritionalInfo[info], "gi");
+        let otherMultiLineRegExp = RegExp("([0-9]+) ?(\<([^<]*)\>\<([^<]*)\>)? ?(<!-- -->)?m?g?" + "( per serving)?:? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)?(<([^<]*)\>\<([^<]*)\>)?(m?g)? ?(<([^<]*)\>\<([^<]*)\>)? ?(\\([0-9]+%\\))?" + otherNutritionalInfo[info], "gi");
         replaceInfoSplitByChevrons(otherMultiLineRegExp);
         
-        let otherMultiLineRegExp2 = RegExp(otherNutritionalInfo[info] + ":? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(m?g)? ?( per serving)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(\\([0-9]+%\\))?", "gi");
+        let otherMultiLineRegExp2 = RegExp(otherNutritionalInfo[info] + ":? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(<!-- -->)? ?(m?g)? ?( per serving)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(\\([0-9]+%\\))?", "gi");
         replaceInfoSplitByChevrons(otherMultiLineRegExp2);
         
     }
