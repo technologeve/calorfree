@@ -20,6 +20,7 @@ function replaceInfoSplitByChevrons(multiLineRegExp){
     words = [...words];
 
     // Remove them
+    // TODO: account for that there may be multiple pairs of <>
     const reg = /\<([^<]*)\>\<([^<]*)\>/g;
     for (i in words){
         let toReplaceWith = [...words[i][0].matchAll(reg)][0][0];
@@ -29,7 +30,7 @@ function replaceInfoSplitByChevrons(multiLineRegExp){
 
 function removeCalorieDescriptions(){
     // Remove general calorie descriptions
-    const generalCalorieRegExp = /([0-9]+) ?(calorie|cal|kcal)s?( per serving)?|(calories?|cal|kcals?)( per serving)?:? ?([0-9]+)(.[0-9]+)?/g;
+    const generalCalorieRegExp = /([0-9]+) ?(calorie|cal|kcal)s?( per serving)?|(calories?|cal|kcals?)( per serving)?:? ?([0-9]+)(.[0-9]+)? ?(\\([0-9]+%\\))?/g;
     basicRegexReplacement(generalCalorieRegExp)
 
     // Remove nutritional information from Nutrifox plugin
@@ -39,7 +40,7 @@ function removeCalorieDescriptions(){
 
     // Remove calorie descriptions when separated by <>
     // Find all calorie counts of this form
-    const calorieMultiLineRegExp = /(calories?|cal|kcals?)( per serving)?:? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)?(<([^<]*)\>\<([^<]*)\>)?(cals?)? ?/gi;
+    const calorieMultiLineRegExp = /(calories?|cal|kcals?)( per serving)?:? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)?(<([^<]*)\>\<([^<]*)\>)?(cals?)? ?(<([^<]*)\>\<([^<]*)\>)?(\\([0-9]+%\\))?/gi;
     replaceInfoSplitByChevrons(calorieMultiLineRegExp);
 }
 
@@ -53,18 +54,19 @@ function removeAdditionalNutritionalInfo(){
     for (info in otherNutritionalInfo){
 
         // Replace the basic forms of nutritional info
-        let regexNumberFirst = RegExp("[0-9]+ ?m?g?" + otherNutritionalInfo[info] + "( ?per serving)? ?(\([0-9]+%\))?", "gi")
-        let regexNumberSecond = RegExp(otherNutritionalInfo[info] + "( ?per serving)?:? ?[0-9]+ ?m?g?( ?per serving)? ?(\([0-9]+%\))?", "gi")
+        let regexNumberFirst = RegExp("[0-9]+ ?m?g?" + otherNutritionalInfo[info] + "( ?per serving)? ?(\\([0-9]+%\\))?", "gi")
+        let regexNumberSecond = RegExp(otherNutritionalInfo[info] + "( ?per serving)?:? ?[0-9]+ ?m?g?( ?per serving)? ?(\\([0-9]+%\\))?", "gi")
 
         document.body.innerHTML = document.body.innerHTML.replaceAll(regexNumberFirst, "");
         document.body.innerHTML = document.body.innerHTML.replaceAll(regexNumberSecond, "");
 
         // Replace nutritional info in HTMl which are split by chevrons <><>
-        let otherMultiLineRegExp = RegExp("([0-9]+) ?g?" + "( per serving)?:? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)?(<([^<]*)\>\<([^<]*)\>)?(m?g)? ?(\([0-9]+%\))?" + otherNutritionalInfo[info], "gi");
+        let otherMultiLineRegExp = RegExp("([0-9]+) ?(\<([^<]*)\>\<([^<]*)\>)? ?g?" + "( per serving)?:? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)?(<([^<]*)\>\<([^<]*)\>)?(m?g)? ?(<([^<]*)\>\<([^<]*)\>)? ?(\\([0-9]+%\\))?" + otherNutritionalInfo[info], "gi");
         replaceInfoSplitByChevrons(otherMultiLineRegExp);
         
-        let otherMultiLineRegExp2 = RegExp(otherNutritionalInfo[info] + ":? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(m?g)? ?( per serving)? ?(\([0-9]+%\))?", "gi");
+        let otherMultiLineRegExp2 = RegExp(otherNutritionalInfo[info] + ":? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(m?g)? ?( per serving)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(\\([0-9]+%\\))?", "gi");
         replaceInfoSplitByChevrons(otherMultiLineRegExp2);
+        
     }
     
 }
@@ -74,3 +76,4 @@ removeAdditionalNutritionalInfo()
 
 // TODO: remove (28%) info- (\([0-9]+%\))?
 // TODO: serving sizes - 6-8 people
+// TODO: add a regular expression break down diagram
