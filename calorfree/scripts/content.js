@@ -45,7 +45,9 @@ function removeCalorieDescriptions(){
 
 let otherNutritionalInfo = [" ?((poly)?(un)?saturate(s|d)?) ?(fat)?", " ?fats? ?", " ?carb(ohydrate)?s? ?", 
                                 " ?((carbohydrates)? ?of which are)? ?sugar(s)? ?", " ?fib(re|er)s? ?", 
-                                " ?proteins?", " ?salts?", " ?cholesterol", " ?sodium"]
+                                " ?proteins?", " ?salts?", " ?cholesterol", " ?sodium", " ?potassium", 
+                                " ?vitamin a", " ?vitamin c", " ?vitamin b ?12", " ?iron", " ?calcium"
+                            ]
                                 
 function removeAdditionalNutritionalInfo(){
     for (info in otherNutritionalInfo){
@@ -72,4 +74,3 @@ removeAdditionalNutritionalInfo()
 
 // TODO: remove (28%) info- (\([0-9]+%\))?
 // TODO: serving sizes - 6-8 people
-// TODO: add additional nutritional info into the set list
