@@ -25,7 +25,7 @@ const restoreOptions = () => {
         {favouriteFlower: 'rose', likesFlower: true},
         (items) => {
             document.getElementById('flower').value = items.favouriteFlower;
-            document.getElementById('like').checked = itens.likesFlower;
+            document.getElementById('like').checked = items.likesFlower;
         }
     );
 };
