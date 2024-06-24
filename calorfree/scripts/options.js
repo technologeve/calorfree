@@ -1,15 +1,15 @@
-// Save options chrome.storage
+// Saves settings in chrome.storage
 const saveOptions = () => {
     const hideAdditionalInfo = document.getElementById("like").checked;
     
     chrome.storage.sync.set(
         {hideAdditionalInfo: hideAdditionalInfo},
         () => {
-            /* Update status to let user know their 
-               preferences were saved. */
+            // Add text to show settings saved
             const status = document.getElementById("status");
-            console.log("saved", hideAdditionalInfo);
             status.textContent = "Preferences saved!";
+            
+            // Remove text popup after some time
             setTimeout(() => {
                 status.textContent = "";
             }, 750);
@@ -17,9 +17,8 @@ const saveOptions = () => {
     );
 };
 
-/* Restores select box and checkbox state using 
-preferences stored in chrome.storage */
 
+// Resets settings
 const restoreOptions = () => {
     chrome.storage.sync.get(
         {hideAdditionalInfo: false},
@@ -29,5 +28,8 @@ const restoreOptions = () => {
     );
 };
 
+// Listen for content load
 document.addEventListener("DOMContentLoaded", restoreOptions);
+
+// Listen for button click
 document.getElementById("save").addEventListener("click", saveOptions);
