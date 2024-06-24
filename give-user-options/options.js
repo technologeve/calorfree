@@ -11,7 +11,7 @@ const saveOptions = () => {
             const status = document.getElementById("status");
             status.textContent = "Preferences saved!";
             setTimeout(() => {
-                statust.textContent = "";
+                status.textContent = "";
             }, 750);
         }
     );
