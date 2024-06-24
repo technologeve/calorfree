@@ -10,12 +10,12 @@
         "128": "images/icon-128.png"
       },
     "action": {
-        "default_popup": "options.html"
+        "default_popup": "popup.html"
     },
     "content_scripts": [
         {
         "matches": ["<all_urls>"],
-        "js": ["scripts/content.js", "scripts/options.js"]
+        "js": ["scripts/content.js", "scripts/popup.js"]
         }
     ],
     "permissions": [
