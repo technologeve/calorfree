@@ -29,6 +29,8 @@ function replaceInfoSplitByChevrons(multiLineRegExp){
 }
 
 function removeCalorieDescriptions(){
+    /* Replaces calorie count in html with empty stringe*/
+    
     // Remove general calorie descriptions
     const generalCalorieRegExp = /([0-9]+) ?(calorie|cal|kcal)s?( per serving)?|(calories?|cal|kcals?)( per serving)?:? ?([0-9]+)(.[0-9]+)? ?(\\([0-9]+%\\))?/g;
     basicRegexReplacement(generalCalorieRegExp)
@@ -44,6 +46,7 @@ function removeCalorieDescriptions(){
     replaceInfoSplitByChevrons(calorieMultiLineRegExp);
 }
 
+// Set list of other nutritional info to be removed
 let otherNutritionalInfo = [" ?((poly)?(un)?saturate(s|d)?) ?(fat)?", " ?fats? ?", " ?carb(ohydrate)?s? ?", 
                                 " ?((carbohydrates)? ?of which are)? ?sugar(s)? ?", " ?fib(re|er)s? ?", 
                                 " ?proteins?", " ?salts?", " ?cholesterol", " ?sodium", " ?potassium", 
@@ -51,6 +54,8 @@ let otherNutritionalInfo = [" ?((poly)?(un)?saturate(s|d)?) ?(fat)?", " ?fats? ?
                             ]
                                 
 function removeAdditionalNutritionalInfo(){
+    /* Removes additional nutritional info, such as fat and sugar count */
+    
     for (info in otherNutritionalInfo){
 
         // Replace the basic forms of nutritional info
@@ -71,8 +76,27 @@ function removeAdditionalNutritionalInfo(){
     
 }
 
-removeCalorieDescriptions()
-removeAdditionalNutritionalInfo()
+function getSettingsAndBlockInfo(){
+    /* Main function to block calorie and 
+    nutritional info based on user settings. */
+    
+    // Get settings info from chrome storage
+    chrome.storage.sync.get("hideAdditionalInfo", function (obj) {  
+        // Put these settings into variable addInfo
+        let addInfo = obj.hideAdditionalInfo; 
+
+        // Always remove calorie count
+        removeCalorieDescriptions()
+        
+        // If user specified, remove addditional calorie info
+        if (addInfo == true){
+            removeAdditionalNutritionalInfo()}
+        return addInfo;
+        }
+    );
+}
+getSettingsAndBlockInfo()
+
 
 // TODO: serving sizes - 6-8 people
 // TODO: add a regular expression break down diagram
