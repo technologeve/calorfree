@@ -2,16 +2,18 @@
 <html>
     <head>
         <title> Calorfree sections. </title>
+        <link rel="stylesheet" href="options.css"/>
     </head>
     <body>
         <h2>Extension Settings</h2>
         <label>
-            <input type="checkbox" id="like" />
+            <input type="checkbox" id="like" accessibilityLabel="Check to hide additional nutritional info"/>
             Hide further nutritional info.
         </label>
         
+        
+        <button id="save" accessibilityLabel="Save nutrition info preferences">Save preferences</button>
         <div id="status"></div>
-        <button id="save">Save preferences</button>
         
         <script src="scripts/options.js"></script>
     </body>
