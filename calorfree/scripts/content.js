@@ -71,8 +71,22 @@ function removeAdditionalNutritionalInfo(){
     
 }
 
-removeCalorieDescriptions()
-removeAdditionalNutritionalInfo()
+
+
+function getSettings(){
+    chrome.storage.sync.get("hideAdditionalInfo", function (obj) {  
+        console.log("Passed successfully: hideAdditionalInfo"+obj.hideAdditionalInfo)
+        let addInfo = obj.hideAdditionalInfo; 
+        console.log("Passed successfully: hideAdditionalInfo"+addInfo)
+        removeCalorieDescriptions()
+        if (addInfo == true){
+            removeAdditionalNutritionalInfo()}
+        return addInfo;
+    }
+    );
+}
+getSettings()
+
 
 // TODO: serving sizes - 6-8 people
 // TODO: add a regular expression break down diagram
