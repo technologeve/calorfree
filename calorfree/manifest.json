@@ -9,6 +9,9 @@
         "48": "images/icon-48.png",
         "128": "images/icon-128.png"
       },
+    "action": {
+        "default_popup": "options.html"
+    },
     "content_scripts": [
         {
         "matches": ["<all_urls>"],
@@ -17,9 +20,5 @@
     ],
     "permissions": [
         "storage"
-    ],
-    "options_ui": {
-        "page": "options.html",
-        "open_in_tab": false
-    }
+    ]
 }
