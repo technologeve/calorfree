@@ -1,6 +1,6 @@
 // Saves settings in chrome.storage
 const saveOptions = () => {
-    const hideAdditionalInfo = document.getElementById("like").checked;
+    const hideAdditionalInfo = document.getElementById("nutritionCheckbox").checked;
     
     chrome.storage.sync.set(
         {hideAdditionalInfo: hideAdditionalInfo},
@@ -12,7 +12,7 @@ const saveOptions = () => {
             // Remove text popup after some time
             setTimeout(() => {
                 status.textContent = "";
-            }, 750);
+            }, 1250);
         }
     );
 };
@@ -23,7 +23,7 @@ const restoreOptions = () => {
     chrome.storage.sync.get(
         {hideAdditionalInfo: false},
         (items) => {
-            document.getElementById('like').checked = items.hideAdditionalInfo;
+            document.getElementById("nutritionCheckbox").checked = items.hideAdditionalInfo;
         }
     );
 };
