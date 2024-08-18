@@ -11,7 +11,7 @@ Creating a Chrome Extension which blocks calorie count content from websites.
 
 
 ##### User settings popup
-![Screenshot of user settings popup](https://github.com/technologeve/calorfree/blob/main/readme-images/user_settings.png)
+![Screenshot of user settings popup](https://github.com/technologeve/calorfree/blob/main/readme-images/user_settings.png?)
 
 ### Directory structure
 - calorfree: The main project - blocks calorie counts from websites.
