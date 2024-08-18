@@ -5,15 +5,22 @@
         <link rel="stylesheet" href="popup.css"/>
     </head>
     <body>
-        <h2>Calorfree: Extension Settings</h2>
-        <label>
-            <input type="checkbox" id="like" accessibilityLabel="Check to hide additional nutritional info"/>
-            Hide further nutritional info.
-        </label>
-        
-        
-        <button id="save" accessibilityLabel="Save nutrition info preferences">Save preferences</button>
-        <div id="status"></div>
+        <div id="overall">
+            <div class="row-flex">
+                <img src="images/icon-128.png" id="logo"
+                alt="Calorfree logo: a blue crest with simple white drawings of a knife and fork on it.">
+                <h2 id="settings-title">Calorfree: Extension Settings</h2>
+            </div>
+            <div class="row-flex">
+                    <input type="checkbox" accessibilityLabel="Check to hide additional nutritional info"/>
+                    <p id="hide-text">Hide further nutritional info.</p>
+            </div>
+            
+            <div class="row-flex">
+                <button id="save" accessibilityLabel="Save nutrition info preferences">Save preferences</button>
+                <div id="status"></div>
+            </div>
+        </div>
         
         <script src="scripts/popup.js"></script>
     </body>
