@@ -1,4 +1,4 @@
-const returnsThree = require("./content");
+const returnsThree = require("../calorfree/scripts/content");
 test("Removes 'Calories: 20", () => {
     expect(returnsThree()).toBe(3);
 });
