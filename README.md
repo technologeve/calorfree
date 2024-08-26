@@ -17,6 +17,5 @@ Creating a Chrome Extension which blocks calorie count content from websites.
 - calorfree: The main project - blocks calorie counts from websites.
 - give-user-options: Following Chrome tutorial to allow users to specify settings. Here users can select their favourite flower and whether they like flowers.
 - initial_extension: Following the first Chrome extension tutorial, "Hello World" style popup on clicking the extension icon.
-- reading-time: Following the second chrome extension tutorial: displaying estimated reading time on Chrome Extension tutorials.
 - uplifting-quotes: A short project which gives users a motivational quote when they click on the extension.
 
