@@ -1,30 +1,18 @@
-const returnsThree = require("../calorfree/scripts/content");
-test("Removes 'Calories: 20", () => {
-    expect(returnsThree()).toBe(3);
+
+const basicRegexReplacement = require("../calorfree/scripts/content");
+
+beforeEach(() => {
+        // Set up a mock DOM environment before each test
+        Object.defineProperty(global, 'document.body.html', {});
+        document.body.innerHTML = '<div id="app">Calories: 20</div>';
+        
+        Object.defineProperty(global, 'chrome.storage.', {});
+        // document.body.innerHTML = '<div id="app">Calories: 20</div>';
+      });
+
+test("Removes 'Calories: 20'", () => {
+    const generalCalorieRegExp = /([0-9]+) ?(calorie|cal|kcal)s?( per serving)?|(calories?|cal|kcals?)( per serving)?:? ?([0-9]+)(.[0-9]+)? ?(\\([0-9]+%\\))?/g;
+    basicRegexReplacement(generalCalorieRegExp)
+    expect(document.body.innerHTML).toBe("<div id=\"app\"></div>");
+    
 });
-
-// contentScript.test.js
-// import { modifyBody } from './contentScript';
-
-// describe('modifyBody', () => {
-//   beforeEach(() => {
-//     // Set up a mock DOM environment before each test
-//     document.body.innerHTML = '<div id="initial-content">Calories: 20.3</div>';
-//   });
-
-//   it('should modify document.body.innerHTML', () => {
-//     // Call the function
-//     basicRegexReplacement();
-
-//     // Check if document.body.innerHTML has been changed
-//     expect(document.body.innerHTML).not.toBe('<div id="initial-content"></div>');
-//   });
-
-//   it('should contain the new content', () => {
-//     // Call the function
-//     basicRegexReplacement();
-
-//     // Check if the new content is present
-//     expect(document.body.innerHTML).toBe('<div id="new-content">New Content</div>');
-//   });
-// });
