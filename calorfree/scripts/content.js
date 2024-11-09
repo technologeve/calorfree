@@ -10,7 +10,7 @@ function basicRegexReplacement(regexInput){
     // Replace all instances of text with said regular expression
     document.body.innerHTML = document.body.innerHTML.replaceAll(regex, "");
 }
-module.exports = basicRegexReplacement;
+
 
 function replaceInfoSplitByChevrons(multiLineRegExp){
     /* Replaces info input which is split by two sets of <> 
@@ -27,6 +27,10 @@ function replaceInfoSplitByChevrons(multiLineRegExp){
         document.body.innerHTML = document.body.innerHTML.replaceAll(words[i][0], toReplaceWith)
     }
 }
+module.exports = {
+    basicRegexReplacement, 
+    replaceInfoSplitByChevrons}
+;
 
 function removeCalorieDescriptions(){
     /* Replaces calorie count in html with empty stringe*/
@@ -96,7 +100,3 @@ function getSettingsAndBlockInfo(){
     );
 }
 getSettingsAndBlockInfo()
-
-
-// TODO: serving sizes - 6-8 people
-// TODO: add a regular expression break down diagram

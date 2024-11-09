@@ -1,6 +1,5 @@
 
-const basicRegexReplacement = require("../calorfree/scripts/content");
-// const replaceInfoSplitByChevrons = require("../calorfree/scripts/content");
+const funcsToTest = require("../calorfree/scripts/content");
 
 function setupDocumentBody(textToSetup){
   // Set up a mock DOM environment before each test
@@ -22,21 +21,21 @@ afterAll(() => {
 test("replaces regex where present", () => {
   setupDocumentBody('Test Text')
   const generalCalorieRegExp = /Test /g;
-  basicRegexReplacement(generalCalorieRegExp)
+  funcsToTest.basicRegexReplacement(generalCalorieRegExp)
   expect(document.body.innerHTML).toBe("Text");
 });
 
 test("doesn't replace non present regex", () => {
   setupDocumentBody('More Text')
   const generalCalorieRegExp = /Test/g;
-  basicRegexReplacement(generalCalorieRegExp)
+  funcsToTest.basicRegexReplacement(generalCalorieRegExp)
   expect(document.body.innerHTML).toBe("More Text");
 });
 
 test("Removes 'Calories: 20'", () => {
   setupDocumentBody('<div id="app">Calories: 20</div>')
   const generalCalorieRegExp = /([0-9]+) ?(calorie|cal|kcal)s?( per serving)?|(calories?|cal|kcals?)( per serving)?:? ?([0-9]+)(.[0-9]+)? ?(\\([0-9]+%\\))?/g;
-  basicRegexReplacement(generalCalorieRegExp)
+  funcsToTest.basicRegexReplacement(generalCalorieRegExp)
   expect(document.body.innerHTML).toBe("<div id=\"app\"></div>");
   
 });
@@ -44,8 +43,8 @@ test("Removes 'Calories: 20'", () => {
 // Test replaceInfoSplitByChevrons
 // test("two chevrons", () => {
 //   setupDocumentBody('Before<test><text>After')
-//   const generalCalorieRegExp = //g;
-//   replaceInfoSplitByChevrons(generalCalorieRegExp)
+//   const generalCalorieRegExp = / /g;
+//   funcsToTest.replaceInfoSplitByChevrons(generalCalorieRegExp)
 //   expect(document.body.innerHTML).toBe("Before<>After");
 // })
 
