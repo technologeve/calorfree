@@ -23,8 +23,11 @@ function replaceInfoSplitByChevrons(multiLineRegExp){
     // TODO: account for that there may be multiple pairs of <>
     const reg = /\<([^<]*)\>\<([^<]*)\>/g;
     for (i in words){
-        let toReplaceWith = [...words[i][0].matchAll(reg)][0][0];
-        document.body.innerHTML = document.body.innerHTML.replaceAll(words[i][0], toReplaceWith)
+        let toReplaceWith = [...words[i][0].matchAll(reg)][0];
+        if(typeof toReplaceWith !== 'undefined'){
+            toReplaceWith = toReplaceWith[0];
+            document.body.innerHTML = document.body.innerHTML.replaceAll(words[i][0], toReplaceWith)
+        }
     }
 }
 module.exports = {
