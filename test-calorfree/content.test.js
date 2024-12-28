@@ -1,6 +1,12 @@
 
 const funcsToTest = require("../calorfree/scripts/content");
 
+function decodeHtmlEntities(input_string) {
+  const element = document.createElement('div');
+  element.innerHTML = input_string;
+  return element.textContent;
+}
+
 function setupDocumentBody(textToSetup){
   // Set up a mock DOM environment before each test
   Object.defineProperty(global, 'document.body.html', {});
@@ -41,12 +47,18 @@ test("Removes 'Calories: 20'", () => {
 });
 
 // Test replaceInfoSplitByChevrons
-// test("two chevrons", () => {
-//   setupDocumentBody('Before<test><text>After')
-//   const generalCalorieRegExp = / /g;
-//   funcsToTest.replaceInfoSplitByChevrons(generalCalorieRegExp)
-//   expect(document.body.innerHTML).toBe("Before<>After");
-// })
+test("no chevrons, unchanged", () => {
+  setupDocumentBody('Text not to be changed')
+  const generalCalorieRegExp = / /g;
+  funcsToTest.replaceInfoSplitByChevrons(generalCalorieRegExp)
+  expect(document.body.innerHTML).toBe("Text not to be changed");
+})
+test("two chevrons, unchanged", () => {
+  setupDocumentBody("Text not<><> to be changed")
+  const generalCalorieRegExp = /a/g;
+  funcsToTest.replaceInfoSplitByChevrons(generalCalorieRegExp)
+  expect(decodeHtmlEntities(document.body.innerHTML)).toEqual("Text not<><> to be changed");
+})
 
 // test("Removes 'Calories:{one}{two}20'", () => {
 //   const generalCalorieRegExp = /([0-9]+) ?(calorie|cal|kcal)s?( per serving)?|(calories?|cal|kcals?)( per serving)?:? ?([0-9]+)(.[0-9]+)? ?(\\([0-9]+%\\))?/g;
