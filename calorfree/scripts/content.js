@@ -1,4 +1,10 @@
 /** Main script which removes calorie information. */
+
+const generalCalorieRegExp = /([0-9]+) ?(calorie|cal|kcal)s?( per serving)?|(calories?|cal|kcals?)( per serving)?:? ?([0-9]+)(.[0-9]+)? ?(\\([0-9]+%\\))?/g;
+const calorieMultiLineRegExp1 = /(<([^<]*)\>\<([^<]*)\>)?(calories?|cal|kcals?)( per serving)?:? ?(\<([^<]*)\>)+ ?[0-9]+(.[0-9]+)?(<([^<]*)\>\<([^<]*)\>)?(cals?)? ?((<([^<]*)\>\<([^<]*)\>)?(\\([0-9]+%\\)))?/gi;
+const calorieMultiLineRegExp2 = /[0-9]+(.[0-9]+)?(<([^<]*)\>\<([^<]*)\>)?(<([^<]*)\>)?(cals?)? ?(<([^<]*)\>\<([^<]*)\>)?(\\([0-9]+%\\))? ?(calories?|cal|kcals?)( ?per serving)?/gi;
+
+
 function basicRegexReplacement(regexInput){
     /** Takes a regular expression, creates a RegExp object, 
     and uses this to remove all instances of the regular 
@@ -15,31 +21,29 @@ function basicRegexReplacement(regexInput){
 function replaceInfoSplitByChevrons(multiLineRegExp){
     /* Replaces info input which is split by two sets of <> 
     with just the <> and their content. */
-    
-    let words =  document.body.innerHTML.matchAll(multiLineRegExp);
-    words = [...words];
 
-    // Remove them
-    // TODO: account for that there may be multiple pairs of <>
-    const reg = /\<([^<]*)\>\<([^<]*)\>/g;
-    for (i in words){
-        let toReplaceWith = [...words[i][0].matchAll(reg)][0];
-        if(typeof toReplaceWith !== 'undefined'){
-            toReplaceWith = toReplaceWith[0];
-            document.body.innerHTML = document.body.innerHTML.replaceAll(words[i][0], toReplaceWith)
+    const reg = /(\<([^<]*)\>)+/g;
+    
+    for (const match of document.body.innerHTML.matchAll(multiLineRegExp)) {
+        const matched_str = match[0];
+        console.log(typeof(matched_str));
+        if(matched_str != " "){
+            console.log([...matched_str.matchAll(reg)]);
+            const toReplaceWith = [...matched_str.matchAll(reg)][0]
+            if (toReplaceWith != undefined){
+                console.log(matched_str);
+                console.log(toReplaceWith[0]);
+                document.body.innerHTML = document.body.innerHTML.replaceAll(matched_str, toReplaceWith[0]);
+            }
         }
     }
 }
-module.exports = {
-    basicRegexReplacement, 
-    replaceInfoSplitByChevrons}
-;
+
 
 function removeCalorieDescriptions(){
     /* Replaces calorie count in html with empty stringe*/
     
     // Remove general calorie descriptions
-    const generalCalorieRegExp = /([0-9]+) ?(calorie|cal|kcal)s?( per serving)?|(calories?|cal|kcals?)( per serving)?:? ?([0-9]+)(.[0-9]+)? ?(\\([0-9]+%\\))?/g;
     basicRegexReplacement(generalCalorieRegExp)
 
     // Remove nutritional information from Nutrifox plugin
@@ -48,9 +52,8 @@ function removeCalorieDescriptions(){
     basicRegexReplacement(nutrifoxLinkRegExp)
 
     // Remove calorie descriptions when separated by <>
-    // Find all calorie counts of this form
-    const calorieMultiLineRegExp = /(calories?|cal|kcals?)( per serving)?:? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)?(<([^<]*)\>\<([^<]*)\>)?(cals?)? ?(<([^<]*)\>\<([^<]*)\>)?(\\([0-9]+%\\))?/gi;
-    replaceInfoSplitByChevrons(calorieMultiLineRegExp);
+    replaceInfoSplitByChevrons(calorieMultiLineRegExp1);
+    replaceInfoSplitByChevrons(calorieMultiLineRegExp2);
 }
 
 // Set list of other nutritional info to be removed
@@ -103,3 +106,10 @@ function getSettingsAndBlockInfo(){
     );
 }
 getSettingsAndBlockInfo()
+
+module.exports = {
+    basicRegexReplacement, 
+    replaceInfoSplitByChevrons,
+    calorieMultiLineRegExp1,
+    calorieMultiLineRegExp2
+};
