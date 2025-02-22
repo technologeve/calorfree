@@ -59,10 +59,26 @@ test("two chevrons, unchanged", () => {
   funcsToTest.replaceInfoSplitByChevrons(generalCalorieRegExp)
   expect(decodeHtmlEntities(document.body.innerHTML)).toEqual("Text not<><> to be changed");
 })
-
-// test("Removes 'Calories:{one}{two}20'", () => {
-//   const generalCalorieRegExp = /([0-9]+) ?(calorie|cal|kcal)s?( per serving)?|(calories?|cal|kcals?)( per serving)?:? ?([0-9]+)(.[0-9]+)? ?(\\([0-9]+%\\))?/g;
-//   basicRegexReplacement(generalCalorieRegExp)
-//   expect(document.body.innerHTML).toBe("<div id=\"app\"></div>");
+test("no chevrons, key words", () => {
+  setupDocumentBody("Calories<><> don't change3")
+  const generalCalorieRegExp = /a/g;
+  funcsToTest.replaceInfoSplitByChevrons(generalCalorieRegExp)
+  expect(decodeHtmlEntities(document.body.innerHTML)).toEqual("Calories<><> don't change3");
+})
   
-// });
+test("even number of chevrons, cals second, changed", () => {
+  setupDocumentBody("<div>Info: 20.62</div><div> Calories</div>")
+  funcsToTest.replaceInfoSplitByChevrons(funcsToTest.calorieMultiLineRegExp2);
+  expect(document.body.innerHTML).toEqual("<div>Info: </div><div></div>");
+})
+test("odd number of chevrons, cals second, changed", () => {
+  setupDocumentBody("<div>Info: 20.62</div><div> Calories</div>")
+  funcsToTest.replaceInfoSplitByChevrons(funcsToTest.calorieMultiLineRegExp2);
+  expect(document.body.innerHTML).toEqual("<div>Info: </div><div></div>");
+})
+
+test("odd number of chevrons, cals first, changed", () => {
+  setupDocumentBody("<div><h3>Calories<h3/> 20</div>")
+  funcsToTest.replaceInfoSplitByChevrons(funcsToTest.calorieMultiLineRegExp1);
+  expect(document.body.innerHTML).toEqual("<div><h3></h3></div>");
+})
