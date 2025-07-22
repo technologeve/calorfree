@@ -1,11 +1,10 @@
-/**
- * @jest-environment jsdom
- */
+// Tests for popup.js
 
-require('@testing-library/jest-dom');
-const { fireEvent } = require('@testing-library/dom');
+// Imports
+require("@testing-library/jest-dom");
+const {fireEvent} = require("@testing-library/dom");
 
-// Simulate chrome.storage API
+// Simulate Chrome storage
 global.chrome = {
   storage: {
     sync: {
@@ -17,7 +16,8 @@ global.chrome = {
   }
 };
 
-describe('Calorfree popup settings', () => {
+// Test the saveOptions function
+describe("Calorfree popup settings", () => {
   let checkbox, saveButton, statusDiv;
 
   beforeEach(() => {
@@ -38,12 +38,12 @@ describe('Calorfree popup settings', () => {
       </div>
     `;
 
-    checkbox = document.getElementById('nutritionCheckbox');
-    saveButton = document.getElementById('save');
-    statusDiv = document.getElementById('status');
+    checkbox = document.getElementById("nutritionCheckbox");
+    saveButton = document.getElementById("save");
+    statusDiv = document.getElementById("status");
     
-    delete require.cache[require.resolve('../calorfree/scripts/popup.js')];
-    require('../calorfree/scripts/popup.js');
+    delete require.cache[require.resolve("../calorfree/scripts/popup.js")];
+    require("../calorfree/scripts/popup.js");
   });
 
   afterEach(() => {
@@ -51,7 +51,7 @@ describe('Calorfree popup settings', () => {
     jest.useRealTimers();
     jest.clearAllMocks();
     jest.resetModules();
-    document.body.innerHTML = '';
+    document.body.innerHTML = "";
   });
 
   test("Set additional info to true", () => {
@@ -79,7 +79,13 @@ describe('Calorfree popup settings', () => {
     // Check for status message (might be set immediately or after callback)
     const status = document.getElementById("status");
     // Try both possible messages that might be used
-    expect(status.textContent).toMatch(/Preferences saved!?/);
+    expect(status.textContent).toMatch("Preferences saved!");
+    
+    // Wait until status message timeout
+    jest.advanceTimersByTime(1500);
+
+    // Check status message cleared
+    expect(statusDiv.textContent).toMatch("");
   });
 
   test("Set additional info to false", () => {
@@ -116,3 +122,63 @@ describe('Calorfree popup settings', () => {
     expect(statusDiv.textContent).toMatch("");
   });
 });
+
+// Test the restoreOptions function
+describe("restoreOptions function", () => {
+  let checkbox;
+
+  beforeEach(() => {
+    jest.useFakeTimers();
+    jest.clearAllMocks();
+    
+    // Load the HTML structure
+    document.body.innerHTML = `
+      <div id="overall">
+        <div class="row-flex">
+          <input type="checkbox" id="nutritionCheckbox" />
+          <p id="hide-text">Hide further nutritional info.</p>
+        </div>
+        <div class="row-flex">
+          <button id="save">Save preferences</button>
+          <div id="status"></div>
+        </div>
+      </div>
+    `;
+    
+    checkbox = document.getElementById("nutritionCheckbox");
+    
+  });
+
+  afterEach(() => {
+    jest.runOnlyPendingTimers();
+    jest.useRealTimers();
+    jest.clearAllMocks();
+    jest.resetModules();
+  });
+
+  test("restoreOptions if false", () => {
+    // Mock chrome.storage.sync.get to return false
+    global.chrome.storage.sync.get = jest.fn((defaults, cb) => cb({ hideAdditionalInfo: false }));
+    
+    // Call restoreOptions
+    const funcsToTest = require("../calorfree/scripts/popup.js");
+    funcsToTest.restoreOptions();
+
+    // Check that checkbox is set to false
+    expect(checkbox.checked).toBe(false);
+  });
+
+  test("restoreOptions if true", () => {
+    // Mock chrome.storage.sync.get to return true
+    global.chrome.storage.sync.get = jest.fn((defaults, cb) => cb({ hideAdditionalInfo: true }));
+    
+    // Call restoreOptions
+    const funcsToTest = require("../calorfree/scripts/popup.js");
+    funcsToTest.restoreOptions();
+
+    // Check that checkbox is set to true
+    expect(checkbox.checked).toBe(true);
+  });
+}
+);
+
