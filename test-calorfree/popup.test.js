@@ -1,4 +1,8 @@
-// Tests for popup.js
+/**
+ * Jest tests for popup.js
+ * 
+ * @author technologeve
+ */
 
 // Imports
 require("@testing-library/jest-dom");
@@ -8,8 +12,6 @@ const {fireEvent} = require("@testing-library/dom");
 global.chrome = {
   storage: {
     sync: {
-      // get: jest.fn(),
-      // set: jest.fn()
         set: jest.fn((obj, cb) => cb()),
         get: jest.fn((defaults, cb) => cb({ hideAdditionalInfo: getValue }))
     }
