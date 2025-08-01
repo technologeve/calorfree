@@ -33,3 +33,8 @@ document.addEventListener("DOMContentLoaded", restoreOptions);
 
 // Listen for button click
 document.getElementById("save").addEventListener("click", saveOptions);
+
+module.exports = {
+    saveOptions,
+    restoreOptions
+};
