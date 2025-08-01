@@ -60,7 +60,7 @@ function removeCalorieDescriptions(){
 let otherNutritionalInfo = [" ?((poly)?(un)?saturate(s|d)?) ?(fat)?", " ?fats? ?", " ?carb(ohydrate)?s? ?", 
                                 " ?((carbohydrates)? ?of which are)? ?sugar(s)? ?", " ?fib(re|er)s? ?", 
                                 " ?proteins?", " ?salts?", " ?cholesterol", " ?sodium", " ?potassium", 
-                                " ?vitamin a", " ?vitamin c", " ?vitamin b ?12", " ?iron", " ?calcium"
+                                " ?vitamin a", " ?vitamin c", " ?vitamin b ?12", " ?iron", " ?calcium", "fat"
                             ]
                                 
 function removeAdditionalNutritionalInfo(){
@@ -76,10 +76,10 @@ function removeAdditionalNutritionalInfo(){
         document.body.innerHTML = document.body.innerHTML.replaceAll(regexNumberSecond, "");
 
         // Replace nutritional info in HTMl which are split by chevrons <><>
-        let otherMultiLineRegExp = RegExp("([0-9]+) ?(\<([^<]*)\>\<([^<]*)\>)? ?(<!-- -->)?m?g?" + "( per serving)?:? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)?(<([^<]*)\>\<([^<]*)\>)?(m?g)? ?(<([^<]*)\>\<([^<]*)\>)? ?(\\([0-9]+%\\))?" + otherNutritionalInfo[info], "gi");
+        let otherMultiLineRegExp = RegExp("([0-9]+)(\\.[0-9]+)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(<!-- -->)?m?g?" + "( per serving)?:? ?(\<([^<]*)\>)?(\<([^<]*)\>)?([0-9]+(.[0-9]+)?)?(<([^<]*)\>\<([^<]*)\>)?(m?g)? ?(<([^<]*)\>\<([^<]*)\>)? ?(\\([0-9]+%\\))?" + otherNutritionalInfo[info], "gi");
         replaceInfoSplitByChevrons(otherMultiLineRegExp);
         
-        let otherMultiLineRegExp2 = RegExp(otherNutritionalInfo[info] + ":? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(<!-- -->)? ?(m?g)? ?( per serving)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(\\([0-9]+%\\))?", "gi");
+        let otherMultiLineRegExp2 = RegExp(otherNutritionalInfo[info] + ":? ?(\<([^<]*)\>)*[0-9]+(.[0-9]+)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(<!-- -->)? ?(m?g)? ?( per serving)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(\\([0-9]+%\\))?", "gi");
         replaceInfoSplitByChevrons(otherMultiLineRegExp2);
         
     }
@@ -111,5 +111,6 @@ module.exports = {
     basicRegexReplacement, 
     replaceInfoSplitByChevrons,
     calorieMultiLineRegExp1,
-    calorieMultiLineRegExp2
+    calorieMultiLineRegExp2,
+    removeAdditionalNutritionalInfo
 };
