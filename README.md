@@ -21,3 +21,8 @@ Chrome Extension which blocks calorie count content from websites.
 ### Opportunities for further development
 - Remove serving sizes - e.g. 6-8 people
 - Add a regular expression break down diagram
+
+### Testing instructions
+
+The tests are made using jest, and can be run from the test-calorfree directory with
+`jest --setupFilesAfterEnv=./jest.mock.js
