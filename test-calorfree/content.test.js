@@ -126,9 +126,9 @@ test("remove additional, salt:10mg", () => {
   expect(document.body.innerHTML).toEqual("");
 })
 test("remove additional,5 g sugar", () => {
-  setupDocumentBody("5 g sugar")
+  setupDocumentBody("5 g sugar extra info also 6")
   funcsToTest.removeAdditionalNutritionalInfo();
-  expect(document.body.innerHTML).toEqual("");
+  expect(document.body.innerHTML).toEqual("extra info also 6");
 })
 test("remove additional, sugar 5g", () => {
   setupDocumentBody("sugar 5g")
