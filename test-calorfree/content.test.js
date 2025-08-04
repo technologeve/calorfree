@@ -82,7 +82,11 @@ test("odd number of chevrons, cals first, changed", () => {
   funcsToTest.replaceInfoSplitByChevrons(funcsToTest.calorieMultiLineRegExp1);
   expect(document.body.innerHTML).toEqual("<div><h3></h3></div>");
 })
-
+test("calories inside chevrons", () => {
+  setupDocumentBody("<div><h3 id=\"calories\">Calories<h3/> 20</div>")
+  funcsToTest.replaceInfoSplitByChevrons(funcsToTest.calorieMultiLineRegExp1);
+  expect(document.body.innerHTML).toEqual("<div><h3 id=\"calories\"></h3></div>");
+})
 
 // removeAdditionalNutritionalInfo
 test("remove additional, unchanged", () => {
