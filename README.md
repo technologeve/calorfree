@@ -15,4 +15,13 @@ Chrome Extension which blocks calorie count content from websites.
 
 ### Directory structure
 - calorfree: The main project - blocks calorie counts from websites.
+- readme-images: Images used in this readme!
+- test-calorfree: Testing repo
 
+### Opportunities for further development
+- Remove serving sizes - e.g. 6-8 people
+- Add a regular expression break down diagram
+
+### Testing instructions
+
+The tests are made using jest. You will need ramda installed. Tests can be run from the test-calorfree directory with `jest --setupFilesAfterEnv=./jest.mock.js`

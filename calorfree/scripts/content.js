@@ -1,5 +1,27 @@
 /** Main script which removes calorie information. */
 
+// General calorie RegExp
+const generalCalorieRegExp = /([0-9]+) ?(calorie|cal|kcal)s?( per serving)?|(calories?|cal|kcals?)( per serving)?:? ?([0-9]+)(.[0-9]+)? ?(\\([0-9]+%\\))?/g;
+const calorieMultiLineRegExp1 = /(<([^<]*)\>\<([^<]*)\>)?(calories?|cal|kcals?)( per serving)?:? ?(\<([^<]*)\>)+ ?[0-9]+(.[0-9]+)?(<([^<]*)\>\<([^<]*)\>)?(cals?)? ?((<([^<]*)\>\<([^<]*)\>)?(\\([0-9]+%\\)))?/gi;
+const calorieMultiLineRegExp2 = /[0-9]+(.[0-9]+)?(<([^<]*)\>\<([^<]*)\>)?(<([^<]*)\>)?(cals?)? ?(<([^<]*)\>\<([^<]*)\>)?(\\([0-9]+%\\))? ?(calories?|cal|kcals?)( ?per serving)?/gi;
+
+// Set list of other nutritional info to be removed
+const otherNutritionalInfo = ["((poly)?(un)?saturate(s|d)?) ?(fat)?", "fats?", "carb(ohydrate)?s?", 
+                                "((carbohydrates)? ?of which are)? ?sugar(s)?", "fib(re|er)s?", 
+                                "proteins?", "salts?", "cholesterol", "sodium", "potassium", 
+                                "vitamin a", "vitamin c", "vitamin b ?12", "iron", "calcium", "fat", "sugars?"
+                            ];
+const regexNumberFirstStart = RegExp("[0-9]+ ?m?g? ?", "gi");
+const regexNumberFirstEnd = RegExp(" ?( ?per serving)? ?(\\([0-9]+%\\))?", "gi");
+const regexNumberSecond = RegExp(" ?( ?per serving)?:? ?[0-9]+ ?m?g?( ?per serving)? ?(\\([0-9]+%\\))?", "gi");
+
+const zeroOrMoreChevrons = RegExp("(\<([^<]*)\>)*", "gi");
+const otherMultiLineRegExp = RegExp("([0-9]+)(\\.[0-9]+)? ?" + zeroOrMoreChevrons.source + 
+    " ?(<!-- -->)?m?g?" + "( per serving)?:? ?" + zeroOrMoreChevrons.source + "([0-9]+(.[0-9]+)?)?" + zeroOrMoreChevrons.source + "(m?g)? ?" + zeroOrMoreChevrons.source + " ?(\\([0-9]+%\\))? ?", "gi");
+const otherMultiLineRegExp2 = RegExp(
+    " ?:? ?(\<([^<]*)\>)*[0-9]+(.[0-9]+)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(<!-- -->)? ?(m?g)? ?( per serving)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(\\([0-9]+%\\))?", "gi");
+     
+
 function basicRegexReplacement(regexInput){
     /** Takes a regular expression, creates a RegExp object, 
     and uses this to remove all instances of the regular 
@@ -12,27 +34,29 @@ function basicRegexReplacement(regexInput){
     document.body.innerHTML = document.body.innerHTML.replaceAll(regex, "");
 }
 
+
 function replaceInfoSplitByChevrons(multiLineRegExp){
     /* Replaces info input which is split by two sets of <> 
     with just the <> and their content. */
-    
-    let words =  document.body.innerHTML.matchAll(multiLineRegExp);
-    words = [...words];
 
-    // Remove them
-    // TODO: account for that there may be multiple pairs of <>
-    const reg = /\<([^<]*)\>\<([^<]*)\>/g;
-    for (i in words){
-        let toReplaceWith = [...words[i][0].matchAll(reg)][0][0];
-        document.body.innerHTML = document.body.innerHTML.replaceAll(words[i][0], toReplaceWith)
+    const reg = /(\<([^<]*)\>)+/g;
+    
+    for (const match of document.body.innerHTML.matchAll(multiLineRegExp)) {
+        const matched_str = match[0];
+        if(matched_str != " "){
+            const toReplaceWith = [...matched_str.matchAll(reg)][0]
+            if (toReplaceWith != undefined){
+                document.body.innerHTML = document.body.innerHTML.replaceAll(matched_str, toReplaceWith[0]);
+            }
+        }
     }
 }
+
 
 function removeCalorieDescriptions(){
     /* Replaces calorie count in html with empty stringe*/
     
     // Remove general calorie descriptions
-    const generalCalorieRegExp = /([0-9]+) ?(calorie|cal|kcal)s?( per serving)?|(calories?|cal|kcals?)( per serving)?:? ?([0-9]+)(.[0-9]+)? ?(\\([0-9]+%\\))?/g;
     basicRegexReplacement(generalCalorieRegExp)
 
     // Remove nutritional information from Nutrifox plugin
@@ -41,39 +65,28 @@ function removeCalorieDescriptions(){
     basicRegexReplacement(nutrifoxLinkRegExp)
 
     // Remove calorie descriptions when separated by <>
-    // Find all calorie counts of this form
-    const calorieMultiLineRegExp = /(calories?|cal|kcals?)( per serving)?:? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)?(<([^<]*)\>\<([^<]*)\>)?(cals?)? ?(<([^<]*)\>\<([^<]*)\>)?(\\([0-9]+%\\))?/gi;
-    replaceInfoSplitByChevrons(calorieMultiLineRegExp);
+    replaceInfoSplitByChevrons(calorieMultiLineRegExp1);
+    replaceInfoSplitByChevrons(calorieMultiLineRegExp2);
 }
 
-// Set list of other nutritional info to be removed
-let otherNutritionalInfo = [" ?((poly)?(un)?saturate(s|d)?) ?(fat)?", " ?fats? ?", " ?carb(ohydrate)?s? ?", 
-                                " ?((carbohydrates)? ?of which are)? ?sugar(s)? ?", " ?fib(re|er)s? ?", 
-                                " ?proteins?", " ?salts?", " ?cholesterol", " ?sodium", " ?potassium", 
-                                " ?vitamin a", " ?vitamin c", " ?vitamin b ?12", " ?iron", " ?calcium"
-                            ]
-                                
+                           
 function removeAdditionalNutritionalInfo(){
     /* Removes additional nutritional info, such as fat and sugar count */
     
-    for (info in otherNutritionalInfo){
+    // Loops so that removes all instances of nutritional info, not just first
+    otherNutritionalInfo.forEach((info) => {
+        // Format for each nutrition type
+        let regexNumberFirst = RegExp(regexNumberFirstStart.source + info + regexNumberFirstEnd.source, "gi");
+        let regexNumberSecondFull = RegExp(info + regexNumberSecond.source, "gi");
 
         // Replace the basic forms of nutritional info
-        let regexNumberFirst = RegExp("[0-9]+ ?m?g?" + otherNutritionalInfo[info] + "( ?per serving)? ?(\\([0-9]+%\\))?", "gi")
-        let regexNumberSecond = RegExp(otherNutritionalInfo[info] + "( ?per serving)?:? ?[0-9]+ ?m?g?( ?per serving)? ?(\\([0-9]+%\\))?", "gi")
-
         document.body.innerHTML = document.body.innerHTML.replaceAll(regexNumberFirst, "");
-        document.body.innerHTML = document.body.innerHTML.replaceAll(regexNumberSecond, "");
+        document.body.innerHTML = document.body.innerHTML.replaceAll(regexNumberSecondFull, "");
 
         // Replace nutritional info in HTMl which are split by chevrons <><>
-        let otherMultiLineRegExp = RegExp("([0-9]+) ?(\<([^<]*)\>\<([^<]*)\>)? ?(<!-- -->)?m?g?" + "( per serving)?:? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)?(<([^<]*)\>\<([^<]*)\>)?(m?g)? ?(<([^<]*)\>\<([^<]*)\>)? ?(\\([0-9]+%\\))?" + otherNutritionalInfo[info], "gi");
-        replaceInfoSplitByChevrons(otherMultiLineRegExp);
-        
-        let otherMultiLineRegExp2 = RegExp(otherNutritionalInfo[info] + ":? ?\<([^<]*)\>\<([^<]*)\>[0-9]+(.[0-9]+)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(<!-- -->)? ?(m?g)? ?( per serving)? ?(\<([^<]*)\>\<([^<]*)\>)? ?(\\([0-9]+%\\))?", "gi");
-        replaceInfoSplitByChevrons(otherMultiLineRegExp2);
-        
-    }
-    
+        replaceInfoSplitByChevrons(RegExp(otherMultiLineRegExp.source + info, "gi"));     
+        replaceInfoSplitByChevrons(RegExp(info + otherMultiLineRegExp2.source, "gi"));
+    })
 }
 
 function getSettingsAndBlockInfo(){
@@ -95,8 +108,13 @@ function getSettingsAndBlockInfo(){
         }
     );
 }
-getSettingsAndBlockInfo()
+getSettingsAndBlockInfo();
 
-
-// TODO: serving sizes - 6-8 people
-// TODO: add a regular expression break down diagram
+// Export functions for testing
+module.exports = {
+    basicRegexReplacement, 
+    replaceInfoSplitByChevrons,
+    calorieMultiLineRegExp1,
+    calorieMultiLineRegExp2,
+    removeAdditionalNutritionalInfo
+};
